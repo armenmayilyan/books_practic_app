@@ -22,8 +22,7 @@ class SubscriptionController extends Controller
         protected PlanSubscriptionInterface $planRepo,
         protected PaymentService $paymentService,
         protected SubscriptionInterface $subRepo
-    )
-    {}
+    ){}
 
     /**
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
@@ -46,17 +45,24 @@ class SubscriptionController extends Controller
      */
     public function cancel($id)
     {
-        $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
+        $free = $this->subRepo->getById($id);
         $date = carbon::now();
         $cancel = [
             'active' => false,
             'cancle_sub' => $date->toDateString(),
         ];
         $this->subRepo->getByIdCansle($id, $cancel);
+        if($free->amount==0){
+            $this->subRepo->getByIdCansle($id, $cancel);
+            return redirect()->back();
 
+        };
+
+        $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
         $stripe->refunds->create([
             'charge' => Subscription::query()->where('id', $id)->first()->charge_id,
         ]);
+
 
 
         return redirect()->back();
@@ -85,10 +91,16 @@ class SubscriptionController extends Controller
                 'amount' => $plan['price'],
                 'type' => Subscription::class,
                 'plan_id' => $plan['id'],
-                'active' => true,
+                'active' => 1,
                 'end_date' => Carbon::now()->addMonth()
             ]
         ];
+        if($paymentData['paymentData']['amount'] == 0){
+            $paymentData['paymentData']['charge_id'] = $plan->name;
+
+            $this->subRepo->store($paymentData['paymentData']);
+            return redirect()->back();
+        }
         $this->paymentService->createPayment($paymentData, Subscription::class);
         return redirect()->to(route('subscriptions', compact('plan',)));
     }

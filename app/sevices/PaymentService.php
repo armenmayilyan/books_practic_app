@@ -6,10 +6,7 @@ namespace App\sevices;
 use App\Contracts\SubscriptionInterface;
 use App\Models\Book;
 use App\Models\Subscription;
-use App\Repository\SubscriptionRepository;
 use App\Repository\PaymentRepository;
-use http\Env\Request;
-use phpDocumentor\Reflection\DocBlock\Tags\Source;
 use Stripe\Charge;
 use Stripe\Stripe;
 
@@ -50,6 +47,7 @@ class PaymentService
             "source" => $chargeData['stripeToken'],
             "description" => $chargeData['description'],
         ]);
+
     }
 
 
@@ -62,13 +60,11 @@ class PaymentService
     public function createPayment(array $data, $type): array
     {
         try {
-
             Stripe::setApiKey(config('services.stripe.secret'));
             $charge = $this->charge($data['chargeData']);
-
             if ($type == Book::class) {
                 $this->paymentRepository->store($data['paymentData']);
-            }elseif ($type == Subscription::class ){
+            } elseif ($type == Subscription::class) {
                 $data['paymentData']['charge_id'] = $charge->id;
                 $this->subRepository->store($data['paymentData']);
             }
@@ -79,6 +75,7 @@ class PaymentService
                 'charge' => $charge
             ];
         } catch (\Exception $exception) {
+            dd($exception);
             return [
                 'success' => false,
                 'type' => 'error',

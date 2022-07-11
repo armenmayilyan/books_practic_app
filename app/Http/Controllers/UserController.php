@@ -8,7 +8,6 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Mail\Mailverify;
 
-use App\Notifications\ResetPasswordNotification;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -24,28 +23,18 @@ use Illuminate\Support\Facades\Password;
 class UserController extends Controller
 {
     /**
-     * @var UserInterface
-     */
-    protected UserInterface $userRepo;
-
-    protected ResetPasswordInterface $resetRepo;
-
-    /**
      * UserController constructor.
      * @param UserInterface $userRepo
      * @param ResetPasswordInterface $resetRepo
      */
-    public function __construct(Userinterface $userRepo, ResetPasswordInterface $resetRepo)
-    {
-        $this->resetRepo = $resetRepo;
-        $this->userRepo = $userRepo;
-    }
+    public function __construct(protected Userinterface $userRepo,
+                                 protected ResetPasswordInterface $resetRepo)
+    {}
 
     /**
-     * @param Request $request
      * @return Factory|View|Application
      */
-    public function register(Request $request): Factory|View|Application
+    public function register(): Factory|View|Application
     {
 
         return view('pages.register');

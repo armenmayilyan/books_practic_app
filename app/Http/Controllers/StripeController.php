@@ -12,30 +12,10 @@ use App\Contracts\PaymentInterface;
 class StripeController extends Controller
 {
 
-    /**
-     * @var BookInterface
-     */
-    protected BookInterface $bookRepo;
-    /**
-     * @var PaymentInterface
-     */
-    protected PaymentInterface $paymentrepo;
-    private PaymentService $paymentService;
-
-    /**
-     * StripeController constructor.
-     * @param BookInterface $bookRepo
-     * @param PaymentService $paymentService
-     * @param PaymentInterface $paymentrepo
-     */
-    public function __construct(Bookinterface $bookRepo,
-                                PaymentService $paymentService,
-                                PaymentInterface $paymentrepo)
-    {
-        $this->bookRepo = $bookRepo;
-        $this->paymentrepo = $paymentrepo;
-        $this->paymentService = $paymentService;
-    }
+    public function __construct(protected Bookinterface $bookRepo,
+                                protected PaymentService $paymentService,
+                                protected PaymentInterface $paymentrepo)
+    {}
 
     /**
      * success response method.

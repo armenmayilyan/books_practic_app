@@ -16,21 +16,13 @@ use Illuminate\Support\Str;
 class BookController extends Controller
 {
     /**
-     * @var BookInterface
-     */
-    protected BookInterface $bookRepo;
-    protected SubscriptionInterface $subRepo;
-
-    /**
      * BookController constructor.
      * @param BookInterface $bookRepo
+     * @param SubscriptionInterface $subRepo
      */
-    public function __construct(Bookinterface $bookRepo,
-                                SubscriptionInterface $subRepo)
-    {
-        $this->subRepo = $subRepo;
-        $this->bookRepo = $bookRepo;
-    }
+    public function __construct(protected BookInterface $bookRepo,
+                                protected SubscriptionInterface $subRepo)
+    {}
 
     /**
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
@@ -38,11 +30,10 @@ class BookController extends Controller
     public function create()
     {
             $active = auth()->user()->activeSubscription();
-
-            if (auth()->user()->books->count() == $active?->plan?->limit) {
-                return redirect()->back();
-            } else {
+            if ($active && auth()->user()->books()->count() <= $active->limit) {
                 return view('pages.create', compact( 'active'));
+            } else {
+                return redirect()->back();
             }
 
         }

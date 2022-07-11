@@ -46,7 +46,7 @@ class User extends Authenticatable implements CanResetPassword
     /**
      * @var string
      */
-    protected $with = ['roles','subscriptions'];
+    protected $with = ['roles','subscriptions','books'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
