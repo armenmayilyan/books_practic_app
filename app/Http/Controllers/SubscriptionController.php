@@ -32,7 +32,7 @@ class SubscriptionController extends Controller
         $plans = Plan::get();
         $active = auth()->user()->activeSubscription();
 
-        $subscriptions = $this->subRepo->userSub(\Auth::id());
+        $this->subRepo->userSub(\Auth::id());
 
         return view('pages.subscription', compact('plans', 'active'));
 

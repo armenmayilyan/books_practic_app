@@ -44,15 +44,15 @@ Route::group(['middleware' => 'guest'], function () {
 
     Route::get('/sign-in/github/redirect', [UserController::class, 'gitCallback'])->name('redirectGithub');
 
-    Route::get("/forgot-password", [UserController::class, "reset"])->middleware('guest')->name('password.request');
+    Route::get("/forgot-password", [UserController::class, "reset"])->name('password.request');
 
-    Route::post("/forgot-password", [UserController::class, "resetPassword"])->middleware('guest')->name('password.email');
+    Route::post("/forgot-password", [UserController::class, "resetPassword"])->name('password.email');
 
     Route::get('/reset-password/{token}', function ($token) {
         return view('pages.reset-password', ['token' => $token]);
     })->name('password.reset.page');;
 
-    Route::post('/reset-password', [UserController::class, "sendPasswordResetNotification"])->middleware('guest')->name('password.reset');
+    Route::post('/reset-password', [UserController::class, "sendPasswordResetNotification"])->name('password.reset');
 
 });
 Route::group(['middleware' => 'auth'], function () {

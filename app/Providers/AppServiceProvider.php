@@ -4,13 +4,11 @@ namespace App\Providers;
 use App\Contracts\BookInterface;
 use App\Contracts\PaymentInterface;
 use App\Contracts\PlanSubscriptionInterface;
-use App\Contracts\ResetPasswordInterface;
 use App\Contracts\SubscriptionInterface;
 use App\Contracts\UserInterface;
 use App\Repository\BookRepository;
 use App\Repository\PaymentRepository;
 use App\Repository\PlanSubscriptionRepository;
-use App\Repository\ResetPasswordRepository;
 use App\Repository\SubscriptionRepository;
 use App\Repository\UserRepository;
 use Illuminate\Support\ServiceProvider;
@@ -46,11 +44,6 @@ class AppServiceProvider extends ServiceProvider
             SubscriptionInterface::class,
             SubscriptionRepository::class
         );
-        $this->app->bind(
-            ResetPasswordInterface::class,
-            ResetPasswordRepository::class
-        );
-
 
     }
 

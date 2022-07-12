@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\sevices\PaymentService;
 use Illuminate\Http\Request;
-use Stripe;
 use App\Contracts\BookInterface;
 use App\Contracts\PaymentInterface;
 
@@ -52,7 +51,7 @@ class StripeController extends Controller
             ]
         ];
 
-        $paymentResponse = $this->paymentService->createPayment($paymentData,Book::class);
+         $this->paymentService->createPayment($paymentData,Book::class);
 
         return redirect('books');
 

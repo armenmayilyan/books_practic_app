@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Contracts\ResetPasswordInterface;
+
 use App\Contracts\UserInterface;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
@@ -25,10 +25,10 @@ class UserController extends Controller
     /**
      * UserController constructor.
      * @param UserInterface $userRepo
-     * @param ResetPasswordInterface $resetRepo
+
      */
     public function __construct(protected Userinterface $userRepo,
-                                 protected ResetPasswordInterface $resetRepo)
+                                 )
     {}
 
     /**
@@ -51,7 +51,7 @@ class UserController extends Controller
 
     /**
      * @param RegisterRequest $registerRequest
-     */
+//     */
     public function storeRegister(RegisterRequest $registerRequest)
     {
 
@@ -83,27 +83,16 @@ class UserController extends Controller
      */
     public function resetPassword(Request $request)
     {
+
         $user = $this->userRepo->emailCheck($request->email);
 
         if (!$user) {
             return redirect()->back()->with(['error' => 'Email not exists']);
         } else {
-            $token_key = Str::random(60);
-            $user->remember_token = $token_key;
-            $user->save();
-            $data = [
-                'email' => $request->email,
-                'token' => $token_key
-            ];
-
-            $this->resetRepo->createPassword($data);
             $request->validate(['email' => 'required|email']);
-
-
             $status = Password::sendResetLink(
                 $request->all('email')
             );
-
             return $status === Password::RESET_LINK_SENT
                 ? back()->with(['status' => __($status)])
                 : back()->withErrors(['email' => __($status)]);
@@ -113,10 +102,11 @@ class UserController extends Controller
 
     public function sendPasswordResetNotification(Request $request)
     {
+
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',
-            'password' => 'required|min:8|confirmed'
+            'password' => 'required|min:6|confirmed'
         ]);
 
         $status = Password::reset(
