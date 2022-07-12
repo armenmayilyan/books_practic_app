@@ -45,22 +45,25 @@ class SubscriptionController extends Controller
      */
     public function cancel($id)
     {
-        $free = $this->subRepo->getById($id);
+        $subscription = $this->subRepo->getById($id);
         $date = carbon::now();
         $cancel = [
             'active' => false,
             'cancle_sub' => $date->toDateString(),
         ];
         $this->subRepo->getByIdCansle($id, $cancel);
-        if($free->amount==0){
+        if($subscription->amount == 0) {
             $this->subRepo->getByIdCansle($id, $cancel);
             return redirect()->back();
 
         };
-
+        $usePeriod = Carbon::now()->diffInDays($subscription->created_at);
+        $usePeriodAmount = $subscription->amount/30 * $usePeriod;
+        $refundAmount = ($subscription->amount - $usePeriodAmount) * 100;
         $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
         $stripe->refunds->create([
             'charge' => Subscription::query()->where('id', $id)->first()->charge_id,
+            'amount' => $refundAmount
         ]);
 
 

@@ -35,7 +35,9 @@ class StripeController extends Controller
      */
     public function stripePost(Request $request, $id)
     {
+
         $books = $this->bookRepo->Bookid($id);
+
         $paymentData = [
             'chargeData' => [
                 'stripeToken' => $request->stripeToken,
@@ -49,6 +51,7 @@ class StripeController extends Controller
                 'paymantable_id' => $books->id,
             ]
         ];
+
         $paymentResponse = $this->paymentService->createPayment($paymentData,Book::class);
 
         return redirect('books');

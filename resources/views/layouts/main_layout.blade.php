@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{{asset('css/bootstrap.css')}}" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
     <title>@yield('title')</title>
 </head>
@@ -87,6 +86,8 @@
 <!-- JavaScript Bundle with Popper -->
 <script src="{{asset('js/bootstrap.js')}}"></script>
 <script src="{{asset('js/script.js')}}"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
 <script src="https://kit.fontawesome.com/67be15e941.js" crossorigin="anonymous"></script>
 </body>
 </html>

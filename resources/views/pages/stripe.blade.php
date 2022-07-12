@@ -7,86 +7,99 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
 </head>
-<body>
-<div class="container">
-    <h1>Stripe Payment Page - HackTheStuff</h1>
-    <div class="container d-flex justify-content-center">
 
-                <div class="panel-heading display-table">
-                    <div class="row display-tr">
-                    </div>
+<div class="container book-container  text-center d-flex justify-content-center">
+
+    <div class="p-5">
+        <p class="text-stripe"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto autem beatae
+            fugit
+            inventore molestias mollitia nam natus nemo, nihil officia praesentium quasi, ratione reprehenderit
+            sapiente
+            sit temporibus totam vel veritatis? </p> <br>
+        <p class="text-stripe"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto autem beatae
+            fugit
+            inventore molestias mollitia nam natus nemo, nihil officia praesentium quasi, ratione reprehenderit
+            sapiente
+            sit temporibus totam vel veritatis? </p> <br>
+        <p class="text-stripe"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto autem beatae
+            fugit
+            inventore molestias mollitia nam natus nemo, nihil officia praesentium quasi, ratione reprehenderit
+            sapiente
+            sit temporibus totam vel veritatis? </p>
+    </div>
+
+    <div class="col-md-6 ">
+        <div class="panel panel-default credit-card-box">
+            <div class="panel-heading display-table">
+                <div class="row display-tr">
+                    <h3 class="panel-title  mt-4">Payment Details</h3>
                 </div>
-                <div class="panel-body">
-                    @if (Session::has('success'))
-                        <div class="alert alert-success text-center">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">×asdasdsdas</a>
-                            <p>{{ Session::get('success')}}</p>
-                        </div>
-                    @endif
-                    <form
+            </div>
+            <div class="panel-body">
+                @if (Session::has('success'))
+                    <div class="alert alert-success text-center">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                        <p>{{ Session::get('success') }}</p>
+                    </div>
+                @endif
+                <form
+                    role="form"
+                    action="{{ route('stripePost',[$books->id]) }}"
+                    method="post"
+                    class="require-validation"
+                    data-cc-on-file="false"
+                    data-stripe-publishable-key="{{env('STRIPE_KEY')}}"
+                    id="payment-form">
+                    @csrf
 
-                        role="form"
-                        action="{{ route('stripePost',[$books->id])}}"
-                        method="post"
-                        class="require-validation"
-                        data-cc-on-file="false"
-
-                        data-stripe-publishable-key="{{ env('STRIPE_KEY') }}"
-                        id="payment-form">
-                        @csrf
-                        <div class='form-row row'>
-                            <div class=' form-group required'>
-                                <label class='control-label'>Name on Card</label>
-                                <input
-                                    class='form-control' size='4' type='text'>
-                            </div>
-                        </div>
-                        <div class='form-row row'>
-                            <div class='form-group card required'>
-                                <label class='control-label'>Card Number</label>
-                                <input
-                                    autocomplete='off' class='form-control card-number' maxlength="16"
-                                    type='text'>
-                            </div>
-                        </div>
-                        <div class='form-row row'>
-                            <div class='col-md-4 form-group cvc required'>
-                                <label class='control-label'>CVC</label>
-                                <input autocomplete='off'
-                                       class='form-control card-cvc'
-                                       placeholder='ex. 311' maxlength="3" size='4'
-                                       type='text'>
-                            </div>
-                            <div class='form-group expiration required'>
-                                <label class='control-label'>Expiration Month</label>
-                                <input
-                                    class='form-control card-expiry-month' placeholder='MM' maxlength="2" size='2'
-                                    type='text'>
-                            </div>
-                            <div class='form-group expiration required'>
-                                <label class='control-label'>Expiration Year</label>
-                                <input
-                                    class='form-control card-expiry-year' placeholder='YYYY' maxlength="4" size='4'
-                                    type='text'>
-                            </div>
-                        </div>
-                <div class="row">
-
-                    <div class="">
-                        <button class="btn btn-primary btn-lg btn-block" type="submit">Pay Now
-                            (${{$books->price}})
-                        </button>
+                    <div class='col-xs-6 form-group required'>
+                        <label class='control-label'>Name on Card</label> <input
+                            class='form-control' type='text'>
                     </div>
 
-                </div>
 
+                    <div class='col-xs-12 form-group required'>
+                        <label class='control-label'>Card Number</label> <input
+                            autocomplete='off' class='form-control card-number'
+                            maxlength="16"
+                            type='text'>
+                    </div>
+
+                    <div class='form-row row'>
+                        <div class='col-xs-6 col-md-4 form-group cvc required'>
+                            <label class='control-label'>CVC</label>
+                            <input autocomplete='off'
+                                   class='form-control card-cvc' placeholder='ex. 311' size='3'
+                                   maxlength="3"
+                                   type='text'>
+                        </div>
+                        <div class='col-xs-12 col-md-4 form-group expiration required'>
+                            <label class='control-label'>Expiration Month</label> <input
+                                class='form-control card-expiry-month' placeholder='MM' size='2'
+                                maxlength="2"
+                                type='text'>
+                        </div>
+                        <div class='col-xs-12 col-md-4 form-group expiration required'>
+                            <label class='control-label'>Expiration Year</label> <input
+                                class='form-control card-expiry-year' placeholder='YYYY' size='4'
+                                type='text' maxlength="4">
+                        </div>
+                    </div>
+                    <div class="row p-5">
+                        <div class="col-xs-12">
+                            <button class="btn btn-primary btn-lg btn-block" type="submit">Pay Now
+                                (${{$books->price}})
+                            </button>
+                        </div>
+                    </div>
                 </form>
             </div>
-
+        </div>
     </div>
 </div>
-
 </div>
+
+
 </body>
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script type="text/javascript">

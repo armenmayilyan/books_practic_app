@@ -61,9 +61,12 @@ class PaymentService
     {
         try {
             Stripe::setApiKey(config('services.stripe.secret'));
+
             $charge = $this->charge($data['chargeData']);
             if ($type == Book::class) {
+
                 $this->paymentRepository->store($data['paymentData']);
+
             } elseif ($type == Subscription::class) {
                 $data['paymentData']['charge_id'] = $charge->id;
                 $this->subRepository->store($data['paymentData']);
@@ -75,7 +78,6 @@ class PaymentService
                 'charge' => $charge
             ];
         } catch (\Exception $exception) {
-            dd($exception);
             return [
                 'success' => false,
                 'type' => 'error',

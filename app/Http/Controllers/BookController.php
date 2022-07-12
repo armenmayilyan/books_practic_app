@@ -30,7 +30,7 @@ class BookController extends Controller
     public function create()
     {
             $active = auth()->user()->activeSubscription();
-            if ($active && auth()->user()->books()->count() <= $active->limit) {
+            if ($active && auth()->user()->books()->count() < $active->limit) {
                 return view('pages.create', compact( 'active'));
             } else {
                 return redirect()->back();
