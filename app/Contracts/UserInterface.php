@@ -23,6 +23,7 @@ interface UserInterface
      * @param mixed $id
      * @return mixed
      */
+
     public function updateEmail(mixed $id);
 
     /**

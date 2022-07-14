@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\sevices;
+namespace App\services;
 
 use App\Contracts\SubscriptionInterface;
 use App\Models\Book;

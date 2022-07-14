@@ -3,12 +3,18 @@
 
 namespace App\Contracts;
 
-use Illuminate\Database\Eloquent\Model;
-
 interface BookInterface
 {
+    /**
+     * @param array $data
+     * @return mixed
+     */
     public function createBook(array $data);
 
-    public function Bookid(array $id);
+    /**
+     * @param array $id
+     * @return mixed
+     */
+    public function BookByid(array $id);
 
 }

@@ -9,6 +9,9 @@ use App\Models\Book;
 
 class BookRepository implements BookInterface
 {
+    /**
+     * @var Book
+     */
     protected Book $model;
 
     public function __construct(Book $model)
@@ -30,15 +33,10 @@ public function createBook(array $data)
      * @param array $id
      * @return mixed
      */
-    public function Bookid($id): mixed
+    public function BookBYid($id): mixed
     {
         return $this->model::where('id',$id)->first();
     }
-//    public function Bookpayment(array $data): mixed
-//    {
-//        return $this->model::with([$data => function ($query) {
-//            $query->where('user_id', auth()->id());
-//        }])->get();
-//    }
+
 
 }

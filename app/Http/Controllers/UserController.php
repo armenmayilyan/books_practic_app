@@ -1,13 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
-
 use App\Contracts\UserInterface;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Mail\Mailverify;
-
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -25,16 +22,15 @@ class UserController extends Controller
     /**
      * UserController constructor.
      * @param UserInterface $userRepo
-
      */
-    public function __construct(protected Userinterface $userRepo,
-                                 )
+    public function __construct(
+        protected Userinterface $userRepo)
     {}
 
     /**
-     * @return Factory|View|Application
+     * @return Application|Factory|View
      */
-    public function register(): Factory|View|Application
+    public function register()
     {
 
         return view('pages.register');
@@ -51,7 +47,8 @@ class UserController extends Controller
 
     /**
      * @param RegisterRequest $registerRequest
-//     */
+     * @return Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function storeRegister(RegisterRequest $registerRequest)
     {
 
@@ -100,6 +97,10 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function sendPasswordResetNotification(Request $request)
     {
 
@@ -157,8 +158,8 @@ class UserController extends Controller
      */
     public function verifyEmail($id)
     {
-
         $user = $this->userRepo->updateEmail($id);
+
         if ($user) {
             return redirect(route('login'));
         } else {
@@ -167,12 +168,19 @@ class UserController extends Controller
 
     }
 
+    /**
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function gitRedirect()
     {
         return Socialite::driver('github')->redirect();
 
 
     }
+
+    /**
+     * @return Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
 
     public function gitCallback()
     {
@@ -194,7 +202,7 @@ class UserController extends Controller
                 'email' => $user->email,
                 'git_id' => $user->id,
             ];
-            $createUser = $this->userRepo->github($data);
+             $createUser = $this->userRepo->github($data);
 
             Auth::login($createUser);
 

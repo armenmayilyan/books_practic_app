@@ -27,7 +27,9 @@ class AdminController extends Controller
         $this->userRepo = $userRepo;
     }
 
-
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function index()
     {
 
@@ -36,7 +38,12 @@ class AdminController extends Controller
 
 
     }
-    public function delete(Request $request, $id)
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function delete($id)
     {
         $this->userRepo->delete($id);
         return redirect()->back();

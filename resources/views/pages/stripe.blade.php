@@ -44,7 +44,7 @@
                 @endif
                 <form
                     role="form"
-                    action="{{ route('stripePost',[$books->id]) }}"
+                    action="{{ route('stripePost',[$book->id]) }}"
                     method="post"
                     class="require-validation"
                     data-cc-on-file="false"
@@ -88,7 +88,7 @@
                     <div class="row p-5">
                         <div class="col-xs-12">
                             <button class="btn btn-primary btn-lg btn-block" type="submit">Pay Now
-                                (${{$books->price}})
+                                (${{$book->price}})
                             </button>
                         </div>
                     </div>

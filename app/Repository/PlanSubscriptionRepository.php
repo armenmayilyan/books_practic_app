@@ -29,7 +29,8 @@ class PlanSubscriptionRepository implements PlanSubscriptionInterface
      */
     public function getById($id)
     {
-        return $this->model::where('id',$id)->first();
+        return $this->model::where('id', $id)
+            ->first();
     }
 
 }

@@ -33,7 +33,7 @@ public function __construct(Subscription $model)
      * @param $id
      * @return mixed
      */
-    public function userSub($id){
+    public function getByUserId($id){
 
     return $this->model::where('user_id', $id)->get();
     }
@@ -41,7 +41,7 @@ public function __construct(Subscription $model)
     /**
      * @return mixed|void
      */
-    public function getByIdCansle($id, $cansle){
+    public function getBySubIdCancel($id, $cansle){
      return $this->model::where('id',$id)->update($cansle);
     }
 

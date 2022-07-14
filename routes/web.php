@@ -59,7 +59,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get("/logout", [UserController::class, "logout"])->name('logout');
 
-    Route::get("/create", [BookController::class, "create"])->name('create');
+    Route::get("/create", [BookController::class, "index"])->name('create');
 
     Route::get("/subscription", [SubscriptionController::class, "index"])->name('subscriptions');
 

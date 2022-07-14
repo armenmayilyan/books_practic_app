@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
-use App\sevices\PaymentService;
+use App\services\PaymentService;
 use Illuminate\Http\Request;
 use App\Contracts\BookInterface;
 use App\Contracts\PaymentInterface;
@@ -17,14 +17,14 @@ class StripeController extends Controller
     {}
 
     /**
-     * success response method.
-     *
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function stripe($id)
     {
-        $books = $this->bookRepo->Bookid($id);
-        return view('pages.stripe', compact('books'));
+        $book = $this->bookRepo->BookByid($id);
+
+        return view('pages.stripe', compact('book'));
     }
 
     /**
@@ -35,7 +35,7 @@ class StripeController extends Controller
     public function stripePost(Request $request, $id)
     {
 
-        $books = $this->bookRepo->Bookid($id);
+        $books = $this->bookRepo->BookByid($id);
 
         $paymentData = [
             'chargeData' => [

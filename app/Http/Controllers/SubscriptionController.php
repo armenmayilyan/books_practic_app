@@ -7,7 +7,7 @@ use App\Contracts\SubscriptionInterface;
 use App\Models\Plan;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
-use App\sevices\PaymentService;
+use App\services\PaymentService;
 use Illuminate\Support\Carbon;
 
 class SubscriptionController extends Controller
@@ -32,8 +32,6 @@ class SubscriptionController extends Controller
         $plans = Plan::get();
         $active = auth()->user()->activeSubscription();
 
-        $this->subRepo->userSub(\Auth::id());
-
         return view('pages.subscription', compact('plans', 'active'));
 
     }
@@ -51,22 +49,23 @@ class SubscriptionController extends Controller
             'active' => false,
             'cancle_sub' => $date->toDateString(),
         ];
-        $this->subRepo->getByIdCansle($id, $cancel);
+        $this->subRepo->getBySubIdCancel($id, $cancel);
         if($subscription->amount == 0) {
-            $this->subRepo->getByIdCansle($id, $cancel);
+            $this->subRepo->getBySubIdCancel($id, $cancel);
             return redirect()->back();
+        }
+        $daysInCurrentMonth = Carbon::now()->daysInMonth;
 
-        };
+
         $usePeriod = Carbon::now()->diffInDays($subscription->created_at);
-        $usePeriodAmount = $subscription->amount/30 * $usePeriod;
-        $refundAmount = ($subscription->amount - $usePeriodAmount) * 100;
+        $usePeriodAmount = ($subscription->amount/$daysInCurrentMonth) * $usePeriod;
+        $refundAmount = round($subscription->amount - $usePeriodAmount)*100;
+
         $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
         $stripe->refunds->create([
             'charge' => Subscription::query()->where('id', $id)->first()->charge_id,
             'amount' => $refundAmount
         ]);
-
-
 
         return redirect()->back();
     }
@@ -105,7 +104,7 @@ class SubscriptionController extends Controller
             return redirect()->back();
         }
         $this->paymentService->createPayment($paymentData, Subscription::class);
-        return redirect()->to(route('subscriptions', compact('plan',)));
+        return redirect()->to(route('subscriptions', compact('plan')));
     }
 
 }

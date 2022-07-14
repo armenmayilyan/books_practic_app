@@ -22,10 +22,10 @@ interface SubscriptionInterface
      * @param $id
      * @return mixed
      */
-    public function userSub($id);
+    public function getByUserId($id);
 
     /**
      * @return mixed
      */
-    public function getByIdCansle($id,$cansle);
+    public function getBySubIdCancel($id,$cansle);
 }
